@@ -38,6 +38,10 @@ a {
   text-decoration:none;
 }
 
+a:hover {
+  color:#32799c;
+}
+
 a small {
   font-size:11px;
   color:#777;
