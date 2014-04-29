@@ -3,6 +3,8 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
+    ofSetDataPathRoot("../Resources/data/");
+    
     ofBackground(0);
     ofHideCursor();
     
