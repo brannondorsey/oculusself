@@ -19,6 +19,8 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
+        bool streaming;
+        bool deviceFound;
         int camWidth;
         int camHeight;
         float webcamY;
