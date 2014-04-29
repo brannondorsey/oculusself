@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 
-class testApp : public ofBaseApp{
+class ofApp : public ofBaseApp{
 
 	public:
 		void setup();
@@ -25,8 +25,12 @@ class testApp : public ofBaseApp{
         int camHeight;
         float webcamY;
         float xOffset;
-        ofTexture mirrorTexture;
+        float fontSize;
+        std::string noWebcamMessage;
+        ofTrueTypeFont font;
+        ofRectangle noWebcamMessageBounds;
         unsigned char * videoMirror;
+        ofTexture mirrorTexture;
         ofImage mask;
         ofVideoGrabber videoGrabber;
 		

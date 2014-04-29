@@ -1,9 +1,16 @@
-#include "testApp.h"
+#include "ofApp.h"
 
 //--------------------------------------------------------------
-void testApp::setup(){
+void ofApp::setup(){
+    
     ofBackground(0);
     ofHideCursor();
+    
+    fontSize = 32;
+    noWebcamMessage = "No webcam detected.";
+    font.loadFont("Lato-Lig.ttf", fontSize);
+    noWebcamMessageBounds = font.getStringBoundingBox(noWebcamMessage, 0, 0);
+    
     mask.loadImage("oculus_mask.png");
     
     camWidth = 1138;
@@ -14,34 +21,19 @@ void testApp::setup(){
     deviceFound = (devices.size() > 0);
     
     if (deviceFound) {
-        
-//        for (int i = 0; i < devices.size(); i++) {
-//            
-//            ofVideoDevice device = devices[i];
-//            cout<<"Device name: "<<device.deviceName<<endl;
-//            cout<<"Device ID: "<<device.id<<endl;
-//            cout<<"Device Hardware: "<<device.hardwareName<<endl;
-//            cout<<"Device Available: "<<device.bAvailable<<endl;
-//            cout<<"device.formats.size(): "<<device.formats.size()<<endl;
-//            for (int j = 0; j < device.formats.size(); j++) {
-//                cout<<"Width "<<i+1<<":"<<device.formats[i].width<<endl;
-//                cout<<"Height "<<i+1<<":"<<device.formats[i].height<<endl;
-//            }
-//        }
-        
         videoGrabber.setDeviceID(0);
         videoGrabber.setDesiredFrameRate(60);
         videoGrabber.initGrabber(camWidth, camHeight);
         videoMirror = new unsigned char[camWidth*camHeight*3];
         mirrorTexture.allocate(camWidth, camHeight, GL_RGB);
         webcamY = ofGetHeight()/2 - videoGrabber.getHeight()/2 + 10;
-        xOffset = ofGetWidth()/2 - 600/2;
+        xOffset = ofGetWidth()/2 - 800/2;
         cout<<"videoGrabber: "<<videoGrabber.getHeight()/2<<endl;
     }
 }
 
 //--------------------------------------------------------------
-void testApp::update(){
+void ofApp::update(){
     
     if (deviceFound) {
         videoGrabber.update();
@@ -71,77 +63,83 @@ void testApp::update(){
 }
 
 //--------------------------------------------------------------
-void testApp::draw(){
+void ofApp::draw(){
     
-    
-    ofTranslate(0, -30);
-    if (videoGrabber.isInitialized() &&
-        streaming) {
-        
-        unsigned char * pixels = videoGrabber.getPixels();
-        mirrorTexture.drawSubsection(40,
-                                     webcamY,
-                                     ofGetWidth()/2,
-                                     camHeight,
-                                     xOffset,
-                                     0,
-                                     mirrorTexture.getWidth()/2,
-                                     camHeight);
+    if (deviceFound) {
+        if (videoGrabber.isInitialized() &&
+            streaming) {
+            
+            unsigned char * pixels = videoGrabber.getPixels();
+            mirrorTexture.drawSubsection(40,
+                                         webcamY,
+                                         ofGetWidth()/2,
+                                         camHeight,
+                                         xOffset,
+                                         0,
+                                         mirrorTexture.getWidth()/2,
+                                         camHeight);
 
-        mirrorTexture.drawSubsection(ofGetWidth()/2,
-                                     webcamY,
-                                     ofGetWidth()/2,
-                                     camHeight,
-                                     xOffset + 80,
-                                     0,
-                                     mirrorTexture.getWidth()/2,
-                                     camHeight);
+            mirrorTexture.drawSubsection(ofGetWidth()/2,
+                                         webcamY,
+                                         ofGetWidth()/2,
+                                         camHeight,
+                                         xOffset + 80,
+                                         0,
+                                         mirrorTexture.getWidth()/2,
+                                         camHeight);
+        }
+        mask.draw(0, 0, ofGetWidth(), ofGetHeight());
+        
+    } else {
+        ofSetColor(0);
+        ofRect(0, 0, ofGetWidth(), ofGetHeight());
+        ofSetColor(255);
+        font.drawString(noWebcamMessage, ofGetWidth()/2 - noWebcamMessageBounds.width/2, ofGetHeight()/2 + fontSize/2);
     }
     
-    mask.draw(0, 0, ofGetWidth(), ofGetHeight());
 }
 
 //--------------------------------------------------------------
-void testApp::keyPressed(int key){
-
-}
-
-//--------------------------------------------------------------
-void testApp::keyReleased(int key){
+void ofApp::keyPressed(int key){
 
 }
 
 //--------------------------------------------------------------
-void testApp::mouseMoved(int x, int y ){
+void ofApp::keyReleased(int key){
 
 }
 
 //--------------------------------------------------------------
-void testApp::mouseDragged(int x, int y, int button){
+void ofApp::mouseMoved(int x, int y ){
 
 }
 
 //--------------------------------------------------------------
-void testApp::mousePressed(int x, int y, int button){
+void ofApp::mouseDragged(int x, int y, int button){
 
 }
 
 //--------------------------------------------------------------
-void testApp::mouseReleased(int x, int y, int button){
+void ofApp::mousePressed(int x, int y, int button){
 
 }
 
 //--------------------------------------------------------------
-void testApp::windowResized(int w, int h){
+void ofApp::mouseReleased(int x, int y, int button){
 
 }
 
 //--------------------------------------------------------------
-void testApp::gotMessage(ofMessage msg){
+void ofApp::windowResized(int w, int h){
 
 }
 
 //--------------------------------------------------------------
-void testApp::dragEvent(ofDragInfo dragInfo){ 
+void ofApp::gotMessage(ofMessage msg){
+
+}
+
+//--------------------------------------------------------------
+void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
